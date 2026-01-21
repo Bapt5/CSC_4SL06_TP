@@ -21,6 +21,7 @@ public class Process extends UntypedAbstractActor {
     private int r = 0; // Sequence number for operations
     
     // Configuration
+    private final int id;
     private final int N; // number of processes
     private final int M; // number of operations to perform
     private ActorRef[] processes;
@@ -39,7 +40,8 @@ public class Process extends UntypedAbstractActor {
     private int putOperationsDone = 0;
     private int getOperationsDone = 0;
     
-    public Process(int N, int M, ActorRef[] processes) {
+    public Process(int id, int N, int M, ActorRef[] processes) {
+        this.id = id;
         this.N = N;
         this.M = M;
         this.processes = processes;
@@ -71,7 +73,7 @@ public class Process extends UntypedAbstractActor {
     private void doNextOperation() {
         // Implementation of operation scheduling 
         if (putOperationsDone < M) {
-            Put(putOperationsDone + 1);
+            Put(id*N + putOperationsDone + 1);
             putOperationsDone++;
         } else if (getOperationsDone < M) {
             Get();
@@ -167,7 +169,7 @@ public class Process extends UntypedAbstractActor {
             return;
         }
         operatingPut = true;
-        currentPutRequestNumber = ++r;
+        currentPutRequestNumber = id * N + ++r;
         localValue = value;
         readResponsesPut.clear();
         writeAcksPut.clear();
@@ -186,7 +188,7 @@ public class Process extends UntypedAbstractActor {
             return;
         }
         operatingGet = true;
-        currentGetRequestNumber = ++r;
+        currentGetRequestNumber = id * N + ++r;
         readResponsesGet.clear();
         writeAcksGet.clear();
         for (ActorRef p : processes) {

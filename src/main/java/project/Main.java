@@ -23,7 +23,7 @@ public class Main {
         System.out.println("=== SYSTEM START (N=" + N + ", f=" + f + ", M=" + M + ") ===");
 
         for (int i = 0; i < N; i++) {
-            processes[i] = system.actorOf(Props.create(Process.class, N, M, processes), "process-" + i);
+            processes[i] = system.actorOf(Props.create(Process.class, i, N, M, processes), "process-" + i);
         }
 
         for (int i = 0; i < N; i++) {

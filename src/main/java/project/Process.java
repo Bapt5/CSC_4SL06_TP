@@ -168,6 +168,7 @@ public class Process extends UntypedAbstractActor {
             log.warning("Process {} is already operating", getSelf().path().name());
             return;
         }
+        log.info("Process {} starting Put operation with value {}", getSelf().path().name(), value);
         operatingPut = true;
         currentPutRequestNumber = id * N + ++r;
         localValue = value;
@@ -187,6 +188,7 @@ public class Process extends UntypedAbstractActor {
             log.warning("Process {} is already operating", getSelf().path().name());
             return;
         }
+        log.info("Process {} starting Get operation", getSelf().path().name());
         operatingGet = true;
         currentGetRequestNumber = id * N + ++r;
         readResponsesGet.clear();
